@@ -275,15 +275,33 @@ fn generate_keys(count: usize) -> Result<(), Box<dyn std::error::Error>> {
         let private_key_hex = format!("{:#x}", private_key.signer().to_bytes());
         let address_hex = format!("{:#x}", address);
         
-        println!("┌─────────────────────────────────────────────────────────────┐");
-        println!("│                     🔐 Key Pair #{}                    │", i);
-        println!("├─────────────────────────────────────────────────────────────┤");
-        println!("│ 🔑 Private Key:                                      │");
-        println!("│   {}│", private_key_hex);
-        println!("│                                                     │");
-        println!("│ 📍 Address:                                         │");
-        println!("│   {}│", address_hex);
-        println!("└─────────────────────────────────────────────────────────────┘");
+        // Make perfect square boxes
+        const BOX_WIDTH: usize = 70; // Fixed width for perfect square
+        
+        let title = format!(" Key Pair #{}", i);
+        let title_padding: usize = (BOX_WIDTH - title.len() - 2) / 2;
+        
+        println!("┌{}┐", "─".repeat(BOX_WIDTH));
+        println!("│{}{}{}│", 
+            " ".repeat(title_padding), 
+            title, 
+            " ".repeat(BOX_WIDTH - title_padding - title.len())
+        );
+        println!("├{}┤", "─".repeat(BOX_WIDTH));
+        println!("│ Private Key: {}│", " ".repeat(BOX_WIDTH - 14));
+        println!("│   {}{}│", 
+            private_key_hex.chars().collect::<String>(),
+            " ".repeat(BOX_WIDTH - 3 - private_key_hex.len())
+        );
+        println!("│   {}│", 
+            " ".repeat(BOX_WIDTH - 3)
+        );
+        println!("│ Address: {}│", " ".repeat(BOX_WIDTH - 10));
+        println!("│   {}{}│",
+            address_hex.chars().collect::<String>(),
+            " ".repeat(BOX_WIDTH - 3 - address_hex.len())
+        );
+        println!("└{}┘", "─".repeat(BOX_WIDTH));
         println!();
     }
     
